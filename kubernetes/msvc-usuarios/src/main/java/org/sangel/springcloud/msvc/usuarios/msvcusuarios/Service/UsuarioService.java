@@ -10,6 +10,6 @@ public interface UsuarioService {
     List<Usuario> listar();
     Optional<Usuario> porId(Long id);
     Usuario guardar(Usuario usuario);
-    Usuario actualizar(UsuarioDTO usuarioDTO, Long id);
+    UsuarioDTO actualizar(UsuarioDTO usuarioDTO, Long id);
     void eliminar(Long id);
 }

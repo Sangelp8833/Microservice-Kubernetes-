@@ -41,7 +41,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Usuario actualizar(UsuarioDTO usuarioDTO, Long id) throws ExepcionNoEncontrado {
+    public UsuarioDTO actualizar(UsuarioDTO usuarioDTO, Long id) throws ExepcionNoEncontrado {
         Optional<Usuario> user = porId(id);
         if(user.isEmpty()){
             throw new ExepcionNoEncontrado("El usuario no ha sido encontrado");
@@ -49,7 +49,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             Usuario userToUpdate = mapper.map(usuarioDTO,Usuario.class);
             usuarioRepository.save(userToUpdate);
         }
-        return null;
+        return mapper.map(porId(id),UsuarioDTO.class);
     }
 
     @Override
