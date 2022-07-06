@@ -25,7 +25,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> porId(@PathVariable Long id){
+    public ResponseEntity<?> porId(@PathVariable(name = "id") Long id){
         if(usuarioService.porId(id).isPresent()){
             return new ResponseEntity<>(modelMapper.map(usuarioService.porId(id).get(),UsuarioDTO.class), HttpStatus.OK);
         }else{
@@ -39,12 +39,12 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarUsuario(@PathVariable Long id, @RequestBody UsuarioDTO usuario){
+    public ResponseEntity<?> actualizarUsuario(@PathVariable(name = "id") Long id, @RequestBody UsuarioDTO usuario){
         return new ResponseEntity<>(usuarioService.actualizar(usuario,id),HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminarUsuario(@PathVariable Long id){
+    public ResponseEntity<?> eliminarUsuario(@PathVariable(name = "id") Long id){
         if(usuarioService.porId(id).isPresent()){
             usuarioService.eliminar(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

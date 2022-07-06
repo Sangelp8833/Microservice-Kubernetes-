@@ -8,6 +8,7 @@ import org.sangel.springcloud.msvc.cursos.msvccursos.respository.CursoRepository
 import org.sangel.springcloud.msvc.cursos.msvccursos.service.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +22,7 @@ public class CursoServiceImpl implements CursoService {
     private final ModelMapper mapper = new ModelMapper();
 
     @Override
+    @Transactional(readOnly = true)
     public List<Curso> listar() {
         return cursoRepository.findAll();
     }
@@ -31,14 +33,16 @@ public class CursoServiceImpl implements CursoService {
     }
 
     @Override
+    @Transactional
     public Curso guardar(Curso curso) {
         return cursoRepository.save(curso);
     }
 
     @Override
+    @Transactional
     public CursoDTO actualizar(CursoDTO cursoDTO, Long id) {
-        Optional<Curso> user = porId(id);
-        if(user.isEmpty()){
+        Optional<Curso> curso = porId(id);
+        if(curso.isEmpty()){
             throw new ExepcionNoEncontrado("El usuario no ha sido encontrado");
         }else{
             Curso cursoToUpdate = mapper.map(cursoDTO,Curso.class);
@@ -49,6 +53,7 @@ public class CursoServiceImpl implements CursoService {
     }
 
     @Override
+    @Transactional
     public void eliminar(Long id) {
         cursoRepository.deleteById(id);
     }
