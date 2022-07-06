@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.sangel.springcloud.msvc.usuarios.msvcusuarios.DTO.UsuarioDTO;
 import org.sangel.springcloud.msvc.usuarios.msvcusuarios.Service.UsuarioService;
 import org.sangel.springcloud.msvc.usuarios.msvcusuarios.mensajes.ExepcionNoEncontrado;
+import org.sangel.springcloud.msvc.usuarios.msvcusuarios.mensajes.ExepcionYaExiste;
 import org.sangel.springcloud.msvc.usuarios.msvcusuarios.model.Usuario;
 import org.sangel.springcloud.msvc.usuarios.msvcusuarios.repositorio.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     @Transactional
-    public Usuario guardar(Usuario usuario) {
+    public Usuario guardar(Usuario usuario) throws ExepcionYaExiste {
+        if(usuarioRepository.findByEmail(usuario.getEmail()).isPresent()){
+            throw new ExepcionYaExiste("El usuario  ya existe");
+        }
         return usuarioRepository.save(usuario);
     }
 
