@@ -1,19 +1,20 @@
 package org.sangel.springcloud.msvc.usuarios.msvcusuarios.controllers;
 
+import org.modelmapper.ModelMapper;
 import org.sangel.springcloud.msvc.usuarios.msvcusuarios.DTO.UsuarioDTO;
 import org.sangel.springcloud.msvc.usuarios.msvcusuarios.Service.UsuarioService;
 import org.sangel.springcloud.msvc.usuarios.msvcusuarios.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
+
+    private final ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
     private UsuarioService usuarioService;
@@ -26,7 +27,7 @@ public class UsuarioController {
     @GetMapping("/{id}")
     public ResponseEntity<?> porId(@PathVariable Long id){
         if(usuarioService.porId(id).isPresent()){
-            return new ResponseEntity<>(usuarioService.porId(id).get(), HttpStatus.OK);
+            return new ResponseEntity<>(modelMapper.map(usuarioService.porId(id).get(),UsuarioDTO.class), HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

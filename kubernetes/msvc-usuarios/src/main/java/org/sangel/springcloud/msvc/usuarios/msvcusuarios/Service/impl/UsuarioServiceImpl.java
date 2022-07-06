@@ -19,8 +19,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private ModelMapper mapper;
+    private final ModelMapper mapper = new ModelMapper();
 
     @Override
     @Transactional(readOnly = true)
@@ -47,6 +46,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new ExepcionNoEncontrado("El usuario no ha sido encontrado");
         }else{
             Usuario userToUpdate = mapper.map(usuarioDTO,Usuario.class);
+            userToUpdate.setId(id);
             usuarioRepository.save(userToUpdate);
         }
         return mapper.map(porId(id),UsuarioDTO.class);
