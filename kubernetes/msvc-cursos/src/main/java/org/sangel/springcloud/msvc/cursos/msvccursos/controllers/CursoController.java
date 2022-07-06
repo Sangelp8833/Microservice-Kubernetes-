@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/curso")
 public class CursoController {
@@ -33,12 +35,12 @@ public class CursoController {
     }
 
     @PostMapping
-    public ResponseEntity<?> registrarUsuario(@RequestBody Curso curso){
+    public ResponseEntity<?> registrarUsuario(@Valid @RequestBody Curso curso){
         return new ResponseEntity<>(cursoService.guardar(curso),HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarUsuario(@PathVariable Long id, @RequestBody CursoDTO cursoDTO){
+    public ResponseEntity<?> actualizarUsuario(@PathVariable Long id,@Valid @RequestBody CursoDTO cursoDTO){
         return new ResponseEntity<>(cursoService.actualizar(cursoDTO,id),HttpStatus.OK);
     }
 

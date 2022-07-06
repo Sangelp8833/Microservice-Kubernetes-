@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 
 @RestController
 @RequestMapping("/usuario")
@@ -34,12 +36,12 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<?> registrarUsuario(@RequestBody Usuario usuario){
+    public ResponseEntity<?> registrarUsuario(@Valid @RequestBody Usuario usuario){
         return new ResponseEntity<>(usuarioService.guardar(usuario),HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarUsuario(@PathVariable(name = "id") Long id, @RequestBody UsuarioDTO usuario){
+    public ResponseEntity<?> actualizarUsuario(@PathVariable(name = "id") Long id,@Valid @RequestBody UsuarioDTO usuario){
         return new ResponseEntity<>(usuarioService.actualizar(usuario,id),HttpStatus.OK);
     }
 
