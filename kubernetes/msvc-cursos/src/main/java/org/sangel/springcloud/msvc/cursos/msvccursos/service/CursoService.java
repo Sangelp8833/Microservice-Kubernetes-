@@ -16,6 +16,9 @@ public interface CursoService {
     CursoDTO actualizar(CursoDTO cursoDTO, Long id);
     void eliminar(Long id);
 
+    void eliminarCursoUsuario(Long id);
+
+    // <---- Feign ---->
     Optional<Usuario> asignarUsuario(Usuario usuario, Long cursoId);
     Optional<Usuario> crearUsuario(Usuario usuario, Long cursoId);
     Optional<Usuario> eliminarUsuario(Usuario usuario, Long cursoId);

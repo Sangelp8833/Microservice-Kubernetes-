@@ -3,6 +3,7 @@ package org.sangel.springcloud.msvc.usuarios.msvcusuarios.Service.impl;
 import org.modelmapper.ModelMapper;
 import org.sangel.springcloud.msvc.usuarios.msvcusuarios.DTO.UsuarioDTO;
 import org.sangel.springcloud.msvc.usuarios.msvcusuarios.Service.UsuarioService;
+import org.sangel.springcloud.msvc.usuarios.msvcusuarios.client.CursoClienteRest;
 import org.sangel.springcloud.msvc.usuarios.msvcusuarios.mensajes.ExepcionNoEncontrado;
 import org.sangel.springcloud.msvc.usuarios.msvcusuarios.mensajes.ExepcionYaExiste;
 import org.sangel.springcloud.msvc.usuarios.msvcusuarios.model.Usuario;
@@ -19,6 +20,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private CursoClienteRest clienteRest;
 
     private final ModelMapper mapper = new ModelMapper();
 
@@ -60,6 +64,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Transactional
     public void eliminar(Long id) {
         usuarioRepository.deleteById(id);
+        clienteRest.eliminarCursoUsuario(id);
     }
 
     @Override
