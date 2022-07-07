@@ -1,7 +1,10 @@
 package org.sangel.springcloud.msvc.cursos.msvccursos.controllers;
 
+import feign.FeignException;
+import org.hibernate.validator.constraints.ParameterScriptAssert;
 import org.modelmapper.ModelMapper;
 import org.sangel.springcloud.msvc.cursos.msvccursos.DTO.CursoDTO;
+import org.sangel.springcloud.msvc.cursos.msvccursos.DTO.Usuario;
 import org.sangel.springcloud.msvc.cursos.msvccursos.model.Curso;
 import org.sangel.springcloud.msvc.cursos.msvccursos.service.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/curso")
@@ -27,8 +33,8 @@ public class CursoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> porId(@PathVariable Long id){
-        if(cursoService.porId(id).isPresent()){
-            return new ResponseEntity<>(modelMapper.map(cursoService.porId(id).get(),CursoDTO.class), HttpStatus.OK);
+        if(cursoService.porIdConUsuarios(id).isPresent()){      //porId(id).isPresent()){
+            return new ResponseEntity<>(cursoService.porId(id).get(), HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -49,6 +55,51 @@ public class CursoController {
         if(cursoService.porId(id).isPresent()){
             cursoService.eliminar(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/asignar-usuario/{cursoId}")
+    public ResponseEntity<?> asignarUsuario(@RequestBody Usuario usuario, @PathVariable(name = "cursoId") Long cursoId){
+        Optional<Usuario> o = null;
+        try{
+            o = cursoService.asignarUsuario(usuario,cursoId);
+        }catch (FeignException e){
+            return new ResponseEntity<>(Collections.singletonMap("Mensaje", "No existe el usuario por el id ingresado " + e.getMessage())
+                    ,HttpStatus.NOT_FOUND);
+        }
+        if(o.isPresent()){
+            return new ResponseEntity<>(o.get(),HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/crear-usuario/{cursoId}")
+    public ResponseEntity<?> crearUsuario(@RequestBody Usuario usuario, @PathVariable Long cursoId){
+        Optional<Usuario> o = null;
+        try{
+            o = cursoService.crearUsuario(usuario,cursoId);
+        }catch (FeignException e){
+            return new ResponseEntity<>(Collections.singletonMap("Mensaje", "No fue posible crear el usuario " + e.getMessage())
+                    ,HttpStatus.NOT_FOUND);
+        }
+        if(o.isPresent()){
+            return new ResponseEntity<>(o.get(),HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("/eliminar-usuario/{cursoId}")
+    public ResponseEntity<?> eliminarUsuario(@RequestBody Usuario usuario, @PathVariable Long cursoId){
+        Optional<Usuario> o = null;
+        try{
+            o = cursoService.eliminarUsuario(usuario,cursoId);
+        }catch (FeignException e){
+            return new ResponseEntity<>(Collections.singletonMap("Mensaje", "No existe el usuario por el id ingresado " + e.getMessage())
+                    ,HttpStatus.NOT_FOUND);
+        }
+        if(o.isPresent()){
+            return new ResponseEntity<>(o.get(),HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

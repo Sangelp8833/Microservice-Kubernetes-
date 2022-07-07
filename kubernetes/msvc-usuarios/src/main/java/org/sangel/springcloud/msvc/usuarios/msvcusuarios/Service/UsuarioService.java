@@ -12,4 +12,6 @@ public interface UsuarioService {
     Usuario guardar(Usuario usuario);
     UsuarioDTO actualizar(UsuarioDTO usuarioDTO, Long id);
     void eliminar(Long id);
+
+    List<Usuario> findById(Iterable<Long> id);
 }
