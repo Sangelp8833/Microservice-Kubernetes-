@@ -32,7 +32,7 @@ public class UsuarioController {
         if(usuarioService.porId(id).isPresent()){
             return new ResponseEntity<>(modelMapper.map(usuarioService.porId(id).get(),UsuarioDTO.class), HttpStatus.OK);
         }else{
-            return new ResponseEntity<>("El usuario no ha sido encontrado" ,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("El usuario, no ha sido encontrado" ,HttpStatus.NOT_FOUND);
         }
     }
 
