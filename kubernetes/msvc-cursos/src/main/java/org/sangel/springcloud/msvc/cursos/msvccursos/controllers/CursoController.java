@@ -34,7 +34,7 @@ public class CursoController {
     @GetMapping("/{id}")
     public ResponseEntity<?> porId(@PathVariable Long id){
         if(cursoService.porIdConUsuarios(id).isPresent()){      //porId(id).isPresent()){
-            return new ResponseEntity<>(cursoService.porId(id).get(), HttpStatus.OK);
+            return new ResponseEntity<>(cursoService.porIdConUsuarios(id).get(), HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
