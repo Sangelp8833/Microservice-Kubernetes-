@@ -119,8 +119,6 @@ public class CursoServiceImpl implements CursoService {
             cursoRepository.save(curso);
             return Optional.of(usuarioMsvc);
         }
-
-
         return Optional.empty();
     }
 
