@@ -1,15 +1,15 @@
 FROM openjdk:17-jdk-alpine as builder
-
-WORKDIR /app/msvc-cursos
+ARG MSVC_NAME=msvc-cursos
+WORKDIR /app/$MSVC_NAME
 
 COPY ./pom.xml /app
-COPY ./msvc-cursos/.mvn ./.mvn
-COPY ./msvc-cursos/mvnw .
-COPY ./msvc-cursos/pom.xml .
+COPY ./$MSVC_NAME/.mvn ./.mvn
+COPY ./$MSVC_NAME/mvnw .
+COPY ./$MSVC_NAME/pom.xml .
 
 #RUN ./mvnw clean package -Dmaven.test.skip -Dmaven.main.skip -Dspring-boot.repackage.skip && rm -r ./target/
 RUN ./mvnw dependency:go-offline # --! Hace lo mismo que la línea de arriba
-COPY ./msvc-cursos/src ./src
+COPY ./$MSVC_NAME/src ./src
 
 RUN ./mvnw clean package -DskipTests
 
