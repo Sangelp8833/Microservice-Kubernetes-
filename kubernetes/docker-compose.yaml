@@ -34,7 +34,7 @@ services:
     build:
       context: ./
       dockerfile: ./msvc-usuarios/Dockerfile
-    image: usuarios
+    #image: usuarios #// Es posible crear usando una imagen existente
     ports:
       - "8001:8001"
     env_file: ./msvc-usuarios/.env
@@ -49,7 +49,7 @@ services:
     build:
       context: ./
       dockerfile: ./msvc-cursos/Dockerfile
-    image: cursos
+    #image: cursos #// Es posible crear usando una imagen existente
     ports:
       - "8002:8002"
     env_file: ./msvc-cursos/.env
